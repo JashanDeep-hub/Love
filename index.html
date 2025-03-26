@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Heart Belongs To You</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff6b8b;
+            --soft-pink: #ffdfe6;
+            --deep-pink: #ff1493;
+            --soft-purple: #e0b0ff;
+            --warm-white: #fff9fb;
+            --text-color: #4a2c3a;
+            --gold: #ffd700;
+            --transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--warm-white);
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        /* Particle background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            background: linear-gradient(135deg, #fff9fb 0%, #ffe6ef 100%);
+        }
+
+        /* Floating rose petals */
+        .petal {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            z-index: -1;
+            animation: falling linear infinite;
+        }
+
+        @keyframes falling {
+            0% {
+                top: -10%;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: 110%;
+                transform: translateX(100px) rotate(360deg);
+            }
+        }
+
+        /* Main layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header with parallax effect */
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 10;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(255, 105, 180, 0.2);
+            backdrop-filter: blur(5px);
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat fixed;
+            filter: brightness(0.7);
+            z-index: 1;
+            transform: translateZ(-1px) scale(1.2);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            color: var(--deep-pink);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease-out;
+            background: linear-gradient(to right, #ff6b8b, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            animation: fadeIn 2s ease-out;
+            font-weight: 300;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive love letter */
+        .love-letter {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .love-letter.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .love-letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--deep-pink), var(--soft-purple));
+        }
+
+        .letter-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .letter-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--deep-pink);
+            text-align: right;
+            margin-top: 2rem;
+        }
+
+        /* Interactive elements */
+        .interactive-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--deep-pink);
+            opacity: 0;
+            transition: all 1s ease;
+            pointer-events: none;
+        }
+
+        /* Photo gallery with lightbox */
+        .moments-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1);
+            box-shadow: 0 25px 60px rgba(255, 105, 180, 0.3);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Timeline with animations and stickers */
+        .timeline {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--deep-pink), var(--soft-purple));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            width: 100%;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .timeline-item.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .timeline-content {
+            position: relative;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.1);
+            width: calc(50% - 60px);
+            transition: var(--transition);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            left: calc(50% + 60px);
+        }
+
+        .timeline-date {
+            position: absolute;
+            top: 20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--deep-pink);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-size: 1.2rem;
+        }
+
+        /* Stickers for timeline items */
+        .timeline-sticker {
+            position: absolute;
+            font-size: 2.5rem;
+            color: white;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--primary-pink);
+            box-shadow: 0 5px 15px rgba(255, 107, 140, 0.4);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-sticker {
+            right: -30px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-sticker {
+            left: -30px;
+        }
+
+        /* Love meter */
+        .love-meter {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
+            text-align: center;
+        }
+
+        .meter-container {
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, var(--soft-pink), var(--deep-pink));
+            border-radius: 15px;
+            transition: width 2s ease-in-out;
+        }
+
+        .meter-text {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: var(--deep-pink);
+            font-weight: bold;
+        }
+
+        /* Footer with heartbeat animation */
+        footer {
+            background: linear-gradient(135deg, var(--deep-pink), var(--soft-purple));
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-heart {
+            font-size: 3rem;
+            color: white;
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                width: calc(100% - 90px);
+                left: 60px;
+            }
+            
+            .timeline-date {
+                left: 30px;
+                transform: translateX(0);
+                width: 60px;
+                height: 60px;
+                font-size: 0.9rem;
+            }
+
+            .timeline-sticker {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-sticker {
+                right: -20px;
+            }
+
+            .timeline-item:nth-child(even) .timeline-sticker {
+                left: -20px;
+            }
+        }
+
+        /* Custom cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 107, 140, 0.5);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: multiply;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-inner {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--deep-pink);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--deep-pink);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(15deg);
+            background: var(--primary-pink);
+        }
+
+        /* Confetti effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 999;
+            animation: confettiFall 5s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-inner"></div>
+
+    <!-- Particle background -->
+    <div id="particles-js"></div>
+
+    <!-- Rose petals -->
+    <div id="petals-container"></div>
+
+    <!-- Header with parallax -->
+    <header>
+        <div class="header-content">
+            <h1>My Dearest Love</h1>
+            <p class="subtitle">Every beat of my heart whispers your name</p>
+            <div class="interactive-heart"><i class="fas fa-heart"></i></div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <div class="container">
+        <!-- Love letter section -->
+        <section class="love-letter">
+            <div class="letter-content">
+                <p>My darling,</p>
+                <p>From the moment our eyes met, I knew my life would never be the same. Your smile lights up my world brighter than a thousand suns, and your laughter is the melody that plays in my heart all day long.</p>
+                <p>Remember our first date? How nervous we both were, yet how perfectly comfortable we felt in each other's presence. That was the beginning of our beautiful journey, and every day since has been a gift I cherish.</p>
+                <p>I love the way your eyes crinkle when you laugh, how you bite your lip when you're concentrating, and the way you always know exactly what to say to make me feel loved. You're my best friend, my partner in crime, and the love of my life.</p>
+                <p>This website is just a small token of my endless love for you. Every image, every word, every animation represents a piece of my heart that belongs to you.</p>
+                <div class="signature">Forever yours</div>
+            </div>
+        </section>
+
+        <!-- Photo gallery -->
+        <section>
+            <h2 class="section-title">Our Precious Moments</h2>
+            <div class="moments-gallery">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our moment" class="gallery-image">
+                    <div class="gallery-caption">
+                        <h3>Our First Sunset</h3>
+                        <p>The day I realized I wanted to watch every sunset with you</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our moment" class="gallery-image">
+                    <div class="gallery-caption">
+                        <h3>Laughing Together</h3>
+                        <p>Your laughter is my favorite sound</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our moment" class="gallery-image">
+                    <div class="gallery-caption">
+                        <h3>Our Special Place</h3>
+                        <p>Where our love story continues to grow</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our moment" class="gallery-image">
+                    <div class="gallery-caption">
+                        <h3>Just Us</h3>
+                        <p>Perfect moments in our perfect world</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox -->
+        <div class="lightbox">
+            <div class="lightbox-content">
+                <span class="close-lightbox"><i class="fas fa-times"></i></span>
+                <img src="" alt="" class="lightbox-image">
+            </div>
+        </div>
+
+        <!-- Timeline with stickers -->
+        <section>
+            <h2 class="section-title">Our Love Story</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">First Meet</div>
+                    <div class="timeline-content">
+                        <h3>The Day We Met</h3>
+                        <p>I'll never forget how the world seemed to pause when I first saw you. Your smile captivated me instantly, and I knew I had to know you better.</p>
+                    </div>
+                    <div class="timeline-sticker"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">First Date</div>
+                    <div class="timeline-content">
+                        <h3>Our First Date</h3>
+                        <p>Nervous excitement, endless conversation, and the realization that I never wanted the night to end. That's when I knew you were special.</p>
+                    </div>
+                    <div class="timeline-sticker"><i class="fas fa-coffee"></i></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">First Kiss</div>
+                    <div class="timeline-content">
+                        <h3>Our First Kiss</h3>
+                        <p>A moment frozen in time - perfect, magical, and the beginning of everything. My heart has been yours ever since.</p>
+                    </div>
+                    <div class="timeline-sticker"><i class="fas fa-kiss-wink-heart"></i></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Today</div>
+                    <div class="timeline-content">
+                        <h3>Every Day With You</h3>
+                        <p>Each morning I wake up grateful for another day with you. You make my ordinary days extraordinary and my difficult days bearable.</p>
+                    </div>
+                    <div class="timeline-sticker"><i class="fas fa-heartbeat"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Love meter -->
+        <section class="love-meter">
+            <h2 class="section-title">How Much I Love You</h2>
+            <p>This meter shows just a fraction of my love for you</p>
+            <div class="meter-container">
+                <div class="meter-fill"></div>
+            </div>
+            <div class="meter-text">Loading...</div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-heart"><i class="fas fa-heart"></i></div>
+        <h2>Forever and Always</h2>
+        <p>No matter where life takes us, my heart will always find its way back to you</p>
+    </footer>
+
+    <!-- Floating action button -->
+    <div class="fab" id="fab">
+        <i class="fas fa-heart"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorInner = document.querySelector('.cursor-inner');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            cursorInner.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+            cursorInner.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            cursorInner.style.opacity = '0';
+        });
+
+        // Create rose petals
+        function createPetals() {
+            const container = document.getElementById('petals-container');
+            const petalCount = 15;
+            const petalTypes = 3;
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.backgroundImage = `url('https://www.transparentpng.com/thumb/rose-petal/rose-petal-png-clipart-${Math.floor(Math.random() * petalTypes) + 1}.png')`;
+                petal.style.width = `${Math.random() * 30 + 20}px`;
+                petal.style.height = petal.style.width;
+                petal.style.left = `${Math.random() * 100}%`;
+                petal.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                petal.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(petal);
+            }
+        }
+
+        // Particle background
+        function initParticles() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ff6b8b"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 5,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 2,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffb6c1",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": true,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+
+        // Interactive hearts
+        function createInteractiveHearts() {
+            const header = document.querySelector('header');
+            const heart = document.querySelector('.interactive-heart');
+            
+            header.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                heart.style.left = `${x * 100}%`;
+                heart.style.top = `${y * 100}%`;
+                heart.style.opacity = '1';
+                heart.style.transform = `translate(-50%, -50%) scale(${1 + y})`;
+                
+                setTimeout(() => {
+                    heart.style.opacity = '0';
+                }, 1000);
+            });
+        }
+
+        // Gallery lightbox
+        function initLightbox() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImg = document.querySelector('.lightbox-image');
+            const closeBtn = document.querySelector('.close-lightbox');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.querySelector('img').src;
+                    lightboxImg.src = imgSrc;
+                    lightbox.classList.add('active');
+                });
+            });
+            
+            closeBtn.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+            
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                }
+            });
+        }
+
+        // Love meter animation
+        function animateLoveMeter() {
+            const meterFill = document.querySelector('.meter-fill');
+            const meterText = document.querySelector('.meter-text');
+            let percentage = 0;
+            
+            const interval = setInterval(() => {
+                percentage += 1;
+                meterFill.style.width = `${percentage}%`;
+                
+                if (percentage <= 33) {
+                    meterText.textContent = "I like you a lot";
+                } else if (percentage <= 66) {
+                    meterText.textContent = "I really really like you";
+                } else if (percentage <= 99) {
+                    meterText.textContent = "I'm completely in love with you";
+                } else {
+                    meterText.textContent = "Infinite love ❤️";
+                    clearInterval(interval);
+                }
+            }, 30);
+        }
+
+        // Scroll animations
+        function initScrollAnimations() {
+            const animateElements = document.querySelectorAll('.love-letter, .timeline-item');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Floating action button
+        function initFAB() {
+            const fab = document.getElementById('fab');
+            
+            fab.addEventListener('click', () => {
+                createConfetti();
+                showSweetMessage();
+            });
+        }
+
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#ff6b8b', '#ff1493', '#e0b0ff', '#ffd700', '#ffffff'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Sweet messages
+        function showSweetMessage() {
+            const messages = [
+                "I love you to the moon and back!",
+                "You're the best thing that ever happened to me",
+                "My heart skips a beat every time I see you",
+                "You're my favorite person in the whole world",
+                "I fall in love with you more every day"
+            ];
+            
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            alert(randomMessage);
+        }
+
+        // Initialize everything
+        window.addEventListener('load', () => {
+            createPetals();
+            initParticles();
+            createInteractiveHearts();
+            initLightbox();
+            animateLoveMeter();
+            initScrollAnimations();
+            initFAB();
+        });
+    </script>
+</body>
+</html>
